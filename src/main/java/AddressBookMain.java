@@ -10,5 +10,6 @@ public class AddressBookMain {
     addressBook.show();
     addressBook.delete();
     addressBook.update();
+    addressBook.readCSV();
     }
 }

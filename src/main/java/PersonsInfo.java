@@ -9,6 +9,13 @@ public class PersonsInfo {
     long number;
     String email;
 
+    public PersonsInfo(String name, String readLine, String readLine1, String readLine2, String readLine3, int read, int read1, String readLine4) {
+    }
+
+    public PersonsInfo() {
+
+    }
+
     String getFirstName(){
         return firstName;
     }
@@ -38,7 +45,7 @@ public class PersonsInfo {
         return email;
     }
 
-    public void setFirstName(String firstName) {
+    public void setFirstName(String next) {
         this.firstName = firstName;
     }
 

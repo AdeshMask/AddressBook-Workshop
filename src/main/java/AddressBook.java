@@ -13,7 +13,7 @@ public class AddressBook {
         System.out.println("Enter the Contact details");
 
         System.out.println("Enter the First Name :");
-        persons.getFirstName();
+        persons.setFirstName(scanner.next());
 
         System.out.println("Enter the Last Name :");
         persons.setLastName(scanner.next());
@@ -113,5 +113,21 @@ public class AddressBook {
         } catch(IOException e) {
             System.out.println(e);
         }
+    }
+
+    public boolean readCSV() {
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String name = null;
+            while((name = reader.readLine()) != null) {
+                PersonsInfo person = new PersonsInfo(name, reader.readLine(), reader.readLine(), reader.readLine(), reader.readLine(),reader.read(),reader.read(),reader.readLine());
+                list.add(person);        //adds person to the list
+                reader.readLine();
+            }
+            return true;
+        }
+        catch ( IOException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 }
