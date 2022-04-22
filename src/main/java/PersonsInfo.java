@@ -16,6 +16,9 @@ public class PersonsInfo {
 
     }
 
+    public PersonsInfo(String readLine, String readLine1, String readLine2, String readLine3, int read, int read1, String readLine4) {
+    }
+
     String getFirstName(){
         return firstName;
     }
