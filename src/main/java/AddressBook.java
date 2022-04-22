@@ -8,7 +8,10 @@ public class AddressBook {
     Scanner scanner = new Scanner(System.in);
     ArrayList<PersonsInfo> list = new ArrayList<>();
     HashMap<Integer,String> map = new HashMap<>();
+    private static final String FILE_HEADER = "first_Name,last_Name,Addess,City,State,Zip,Number,Email_ID";
     static File file = new File("AddressBook.csv");
+    private static final String COMMA_DELIMITER = ",";
+    FileWriter fileWriter = null;
     public void addPerson() throws IOException {
         System.out.println("Enter the Contact details");
 
@@ -107,27 +110,31 @@ public class AddressBook {
 
 
     public void writeCSV(PersonsInfo persons) throws IOException {
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-            writer.write(persons.getFirstName()+"\r\n" + persons.getLastName() + "\r\n" + persons.getAddress() + "\r\n" + persons.getCitye() +
-                    "\r\n" + persons.getState() + "\r\n" + persons.getZip() + "\r\n" + persons.getNumber() + "\r\n" + persons.getEmail() + "\r\n\r\n");
-        } catch(IOException e) {
-            System.out.println(e);
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("AddressBook.csv");
+            fileWriter.append(FILE_HEADER.toString());
+        }catch (Exception e) {
+            System.out.println("Error in CsvFileWriter !!!");
+            e.printStackTrace();
         }
+        fileWriter.flush();
+        fileWriter.close();
     }
 
-    public boolean readCSV() {
-        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String name = null;
-            while((name = reader.readLine()) != null) {
-                PersonsInfo person = new PersonsInfo(name, reader.readLine(), reader.readLine(), reader.readLine(), reader.readLine(),reader.read(),reader.read(),reader.readLine());
-                list.add(person);        //adds person to the list
-                reader.readLine();
+    public void readCSV() throws IOException {
+
+        BufferedReader fileReader = null;
+        String line = "";
+        fileReader = new BufferedReader(new FileReader("AddressBook.csv"));
+        fileReader.readLine();
+        while ((line = fileReader.readLine()) != null) {
+            String[] tokens = line.split(COMMA_DELIMITER);
+            if (tokens.length > 0) {
+                PersonsInfo person = new PersonsInfo(fileReader.readLine(), fileReader.readLine(), fileReader.readLine(), fileReader.readLine(), fileReader.read(), fileReader.read(), fileReader.readLine());
+                list.add(person);
             }
-            return true;
         }
-        catch ( IOException e) {
-            System.out.println(e);
-        }
-        return false;
     }
 }
