@@ -1,7 +1,11 @@
+import com.opencsv.CSVWriter;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+import org.json.simple.JSONObject;
+
 
 public class AddressBook {
     PersonsInfo persons = new PersonsInfo();
@@ -10,6 +14,7 @@ public class AddressBook {
     HashMap<Integer,String> map = new HashMap<>();
     private static final String FILE_HEADER = "first_Name,last_Name,Addess,City,State,Zip,Number,Email_ID";
     static File file = new File("AddressBook.csv");
+    static File file1 = new File("AddressBook.json");
     private static final String COMMA_DELIMITER = ",";
     FileWriter fileWriter = null;
     public void addPerson() throws IOException {
@@ -39,7 +44,8 @@ public class AddressBook {
         System.out.println("Enter the EMail ID :");
         persons.setEmail(scanner.next());
         list.add(persons);
-        writeCSV(persons);
+        writeCSV(list);
+        readAndWriteJsonFile(persons);
     }
 
     public void show(){
@@ -109,17 +115,17 @@ public class AddressBook {
     }
 
 
-    public void writeCSV(PersonsInfo persons) throws IOException {
-
+    public void writeCSV(ArrayList<PersonsInfo> list) throws IOException {
         FileWriter fileWriter = null;
         try {
             fileWriter = new FileWriter("AddressBook.csv");
+            CSVWriter writer = new CSVWriter(fileWriter);
             fileWriter.append(FILE_HEADER.toString());
+            //writer.writeNext(list);
         }catch (Exception e) {
             System.out.println("Error in CsvFileWriter !!!");
             e.printStackTrace();
         }
-        fileWriter.flush();
         fileWriter.close();
     }
 
@@ -137,4 +143,27 @@ public class AddressBook {
             }
         }
     }
+
+    public void readAndWriteJsonFile(PersonsInfo p) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("FisrtName", p.getFirstName());
+        jsonObject.put("LastName", p.getLastName());
+        jsonObject.put("Adress", p.getAddress());
+        jsonObject.put("City", p.getCitye());
+        jsonObject.put("State", p.getState());
+        jsonObject.put("ContactNumber", p.getNumber());
+        jsonObject.put("Zip", p.getZip());
+        jsonObject.put("Email", p.getEmail());
+        try {
+            FileWriter file = new FileWriter(file1);
+            file.write(jsonObject.toJSONString());
+            file.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("JSON file created: " + jsonObject);
+
+    }
+
 }
